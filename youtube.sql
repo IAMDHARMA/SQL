@@ -23,3 +23,7 @@ select emp_id,ename,salary from emp where salary>2000000
 
 select * from emp
 select * from emp where jobdesc<>'HR'
+show tables
+update emp set jobdesc='data scientist';
+use youtube_sql;
+delete from emp;

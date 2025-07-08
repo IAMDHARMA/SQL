@@ -1,3 +1,4 @@
+
 create database Supply_Chain_Management_System;
 use supply_chain_Management_system;
 
