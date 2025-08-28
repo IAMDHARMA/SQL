@@ -235,12 +235,57 @@ WHERE p.status = 'available'
 GROUP BY a.agents_id, a.name
 ORDER BY total_sales DESC;
 
--- Get the client names who purchased properties in the city "Chennai".
-
+-- Get the client names who purchased properties in the city "los angels".
+SELECT DISTINCT
+    c.name
+FROM
+    clients c
+        JOIN
+    transactions t ON c.client_id = t.client_id
+        JOIN
+    properties p ON t.property_id = p.property_id
+WHERE
+    status = 'sold'
+        AND p.city = 'los angeles'
+ 
 -- List all properties that have never been sold (i.e., not present in the Transactions table).
 
+SELECT 
+    p.property_id, p.address, p.city, p.price, p.status
+FROM
+    properties p
+        LEFT JOIN
+    transactions t ON p.property_id = t.property_id
+WHERE
+    status = 'available'
 -- Calculate the commission earned by each agent and order it in descending order.
-
+SELECT 
+    a.agents_id, a.name, SUM(t.commission) AS total_commission
+FROM
+    agents a
+        JOIN
+    transactions t ON a.agents_id = t.agents_id
+GROUP BY a.agents_id , a.name
+ORDER BY total_commission DESC;
 -- Find the most expensive property sold and the client who bought it.
-
--- Show the number of properties sold in each city.*/
+SELECT 
+    c.name, t.salesPrice
+FROM
+    properties p
+        JOIN
+    transactions t ON p.property_id = t.property_id
+        JOIN
+    clients c ON t.client_id = c.client_id
+WHERE
+    p.status = 'sold'
+ORDER BY 2 DESC
+LIMIT 1;
+-- Show the number of properties sold in each city.*/transactions
+SELECT DISTINCT
+    p.city, COUNT(t.transaction_id) AS total_properties_sold
+FROM
+    transactions t
+        JOIN
+    properties p ON t.property_id = p.property_id
+GROUP BY p.city
+ORDER BY total_properties_sold DESC;
